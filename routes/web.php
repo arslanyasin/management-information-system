@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::group(['middleware'=>'auth'],function (){
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
         return view('dashboard');
 
@@ -77,9 +77,20 @@ Route::group(['middleware'=>'auth'],function (){
 // OrderController routes
     Route::resource('orders', \App\Http\Controllers\OrderController::class);
 
-// EmployeeController routes
+    // EmployeeController routes
     Route::resource('employees', \App\Http\Controllers\EmployeeController::class);
-    Route::post('employee/delete' , [\App\Http\Controllers\EmployeeController::class , 'delete'])->name('employee-delete');
+    Route::post('employee/delete', [\App\Http\Controllers\EmployeeController::class, 'delete'])->name('employee-delete');
+    Route::get('employee/profile/{id?}', [\App\Http\Controllers\EmployeeController::class, 'profile'])->name('employee-profile');
+
+    // ClientController routes
+    Route::resource('clients', \App\Http\Controllers\ClientController::class);
+    Route::post('clients/delete', [\App\Http\Controllers\ClientController::class, 'delete'])->name('clients-delete');
+    Route::get('clients/profile/{id?}', [\App\Http\Controllers\ClientController::class, 'profile'])->name('clients-profile');
+
+    // ProjectController routes
+    Route::resource('projects', \App\Http\Controllers\ProjectController::class);
+    Route::post('projects/delete', [\App\Http\Controllers\ProjectController::class, 'delete'])->name('projects-delete');
+    Route::get('projects/detail/{id?}', [\App\Http\Controllers\ProjectController::class, 'detail'])->name('projects-detail');
 
 // AttendanceController routes
     Route::resource('attendances', \App\Http\Controllers\AttendanceController::class);
@@ -95,19 +106,18 @@ Route::group(['middleware'=>'auth'],function (){
 
 // DepartmentsController routes
     Route::resource('departments', \App\Http\Controllers\DepartmentController::class);
-    Route::post('departments/delete' , [\App\Http\Controllers\DepartmentController::class , 'delete'])->name('departments-delete');
-    Route::any('getPositionsByDepartment/{id?}' , [\App\Http\Controllers\DepartmentPositionController::class , 'getPositionsByDepartment'])->name('get-positions');
+    Route::post('departments/delete', [\App\Http\Controllers\DepartmentController::class, 'delete'])->name('departments-delete');
+    Route::any('getPositionsByDepartment/{id?}', [\App\Http\Controllers\DepartmentPositionController::class, 'getPositionsByDepartment'])->name('get-positions');
 
 // DepartmentsController routes
     Route::resource('positions', \App\Http\Controllers\DepartmentPositionController::class);
-    Route::post('positions/delete' , [\App\Http\Controllers\DepartmentPositionController::class , 'delete'])->name('positions-delete');
+    Route::post('positions/delete', [\App\Http\Controllers\DepartmentPositionController::class, 'delete'])->name('positions-delete');
 
 // UserController routes
     Route::resource('users', \App\Http\Controllers\UserController::class);
-    Route::post('users/delete' , [\App\Http\Controllers\UserController::class , 'delete'])->name('users-delete');
+    Route::post('users/delete', [\App\Http\Controllers\UserController::class, 'delete'])->name('users-delete');
 
 });
-
 
 
 Auth::routes();

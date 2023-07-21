@@ -12,6 +12,10 @@ class Project extends Model
     protected $fillable = [
         'project_name',
         'description',
+        'price',
+        'price_type',
+        'client_id',
+        'priority',
         'start_date',
         'end_date',
     ];
@@ -23,7 +27,7 @@ class Project extends Model
 
     public function resources()
     {
-        return $this->hasMany(Resource::class);
+        return $this->hasMany(Resource::class,'project_id','project_id');
     }
 
     public function expenses()

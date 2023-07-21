@@ -13,14 +13,19 @@ return new class extends Migration {
         // Project Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('project_id');
+            $table->unsignedBigInteger('client_id');
+            $table->foreign('client_id')->references('id')->on('clients');
             $table->string('project_name');
+            $table->string('price');
+            $table->tinyInteger('price_type')->comment('1=Hourly 2=Fixed');
+            $table->tinyInteger('priority')->comment('1=High 2=Medium 3=Low');
             $table->text('description');
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();
         });
 
-// Task Migration
+        // Task Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('task_id');
             $table->unsignedInteger('project_id');
@@ -34,18 +39,17 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-// Resource Migration
+        // Resource Migration
         Schema::create('resources', function (Blueprint $table) {
-            $table->increments('resource_id');
+            $table->increments('id');
             $table->unsignedInteger('project_id');
             $table->foreign('project_id')->references('project_id')->on('projects');
-            $table->string('resource_name');
-            $table->string('resource_type');
-            $table->integer('quantity');
+            $table->string('employee_id');
+            $table->string('resource_type')->comment('1=lead 2=member');
             $table->timestamps();
         });
 
-// Expense Migration
+        // Expense Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->increments('expense_id');
             $table->unsignedInteger('project_id');

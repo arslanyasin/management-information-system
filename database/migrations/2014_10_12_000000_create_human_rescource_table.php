@@ -20,8 +20,10 @@ return new class extends Migration {
             $table->string('email');
             $table->string('phone');
             $table->date('hire_date');
+            $table->date('birthday');
             $table->string('job_title');
-            $table->string('department');
+            $table->string('address');
+            $table->string('gender');
             $table->timestamps();
         });
 

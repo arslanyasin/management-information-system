@@ -11,6 +11,7 @@ class Employee extends Model
 
     protected $primaryKey = 'employee_id';
     protected $fillable = [
+        'user_id',
         'name',
         'email',
         'phone',
@@ -22,6 +23,10 @@ class Employee extends Model
     public function department()
     {
         return $this->hasOne(Department::class, 'department_id', 'department_id');
+    }
+public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function position()

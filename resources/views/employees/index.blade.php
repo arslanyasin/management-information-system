@@ -16,7 +16,7 @@
         </div>
         <div class="row text-end">
             <div class="col-12 mb-3 mt-3">
-                <a href="{{ route('employees.create') }}" class="btn add-btn">+ Add Employee</a>
+                <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a>
             </div>
         </div>
         <div class="row">
@@ -46,7 +46,7 @@
         </div>
     </div>
 </div>
-
+@include('employees.add-model')
 {{--  Delete Modal  --}}
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="confirm-deleteModalLabel"
      aria-hidden="true">
@@ -84,7 +84,57 @@
             "ordering": false
         });
     });
+    // Get JobTitle
+    $(document).on('change' , '#department_id' , function (){
+        var id = $(this).val();
+        $.ajax({
+            url: '{{ url("/getPositionsByDepartment") }}' + '/' +  id,
+            type: 'get',
+            success: function (response){
+                var option = '';
+                $.each(response , function (index , value){
+                    option += `<option value="${value.id}">${value.position_name}</option>`
+                });
+                $('#position_id').html(option);
+                $('#position_id').removeAttr('disabled');
+            }
+        });
+    });
+    const togglePassword = document.querySelector("#togglePassword");
+    const toggleConfirmPassword = document.querySelector("#toggleConfirmPassword");
+    const password = document.querySelector("#password");
+    const password_confirmation = document.querySelector("#password_confirmation");
 
+    togglePassword.addEventListener("click", function () {
+        // toggle the type attribute
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        if(password.getAttribute("type") === "password") {
+            this.classList.remove("la-eye-slash");
+            this.classList.add("la-eye");
+        }else {
+            this.classList.add("la-eye-slash");
+            this.classList.remove("la-eye");
+        }
+        password.setAttribute("type", type);
+
+        // toggle the icon
+
+    });
+    toggleConfirmPassword.addEventListener("click", function () {
+        // toggle the type attribute
+        const type = password_confirmation.getAttribute("type") === "password" ? "text" : "password";
+        if(password_confirmation.getAttribute("type") === "password") {
+            this.classList.remove("la-eye-slash");
+            this.classList.add("la-eye");
+        }else {
+            this.classList.add("la-eye-slash");
+            this.classList.remove("la-eye");
+        }
+        password_confirmation.setAttribute("type", type);
+
+        // toggle the icon
+
+    });
 
     $(document).on('click', '.deletebtn', function () {
         $('#employee_id').val($(this).attr('data-id'));

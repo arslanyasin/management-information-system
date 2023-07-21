@@ -11,13 +11,16 @@ class Resource extends Model
     protected $primaryKey = 'resource_id';
     protected $fillable = [
         'project_id',
-        'resource_name',
+        'employee_id',
         'resource_type',
-        'quantity',
     ];
 
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class,'project_id','project_id');
+    }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class,'employee_id','employee_id');
     }
 }

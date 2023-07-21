@@ -15,6 +15,23 @@
                 </ul>
             </div>
         </div>
+        <div class="card">
+            <div class="row card-body my-auto">
+                <div class="col-12">
+                    <ul class="nav nav-pills nav-justified mb-3" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="pill" href="#info-tab">Primary Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#contact-tab">Contact info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#account-tab">Account Info</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <div class="card py-5">
             <div class="card-body">
                 <form method="post" action="{{route('employees.update',$employee->employee_id)}}"

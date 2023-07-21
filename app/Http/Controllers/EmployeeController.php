@@ -16,8 +16,9 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = Employee::with(array('department','position'))->get();
-        return view($this->_viewPath . '.index', compact('employees'));
+        $employees = Employee::with(array('department', 'position'))->get();
+        $departments = Department::all();
+        return view($this->_viewPath . '.index', compact('employees','departments'));
     }
 
     public function create()
@@ -26,6 +27,13 @@ class EmployeeController extends Controller
         $departments = Department::all();
         // Return the view for creating a new user
         return view($this->_viewPath . '.create', compact('departments'));
+    }
+
+    public function profile($id)
+    {
+        // Show create form
+        $employee = Employee::with(array('department', 'position','user'))->find($id);
+        return view($this->_viewPath . '.profile', compact('employee'));
     }
 
     public function store(Request $request)
@@ -38,11 +46,18 @@ class EmployeeController extends Controller
                 'hire_date' => 'required|string',
                 'department_id' => 'required',
                 'position_id' => 'required',
+                'password' => 'required|confirmed|min:8',
+                'password_confirmation' => 'required',
+                'image' => 'required',
             ]);
+            $image = time().'.'.$request->image->extension();
+            $request->image->move(public_path('uploads/profile'), $image);
             $user = new User();
             $user->name = $request->input('name');
+            $user->user_type = 2;
             $user->email = $request->input('email');
-            $user->password = Hash::make('12345678');
+            $user->password = Hash::make($request->input('password'));
+            $user->profile_image = 'uploads/profile/'.$image;
             $user->save();
             $employee = new Employee();
             $employee->name = $request->input('name');
@@ -67,15 +82,15 @@ class EmployeeController extends Controller
     public function show($id)
     {
         $employee = Employee::findOrFail($id);
-        return view($this->_viewPath.'.edit', compact('employee'));
+        return view($this->_viewPath . '.edit', compact('employee'));
     }
 
     public function edit($id)
     {
         $employee = Employee::findOrFail($id);
         $departments = Department::all();
-        $positions = DepartmentPosition::where(array('department_id'=>$employee->department_id))->get();
-        return view($this->_viewPath.'.edit', compact('employee','departments','positions'));
+        $positions = DepartmentPosition::where(array('department_id' => $employee->department_id))->get();
+        return view($this->_viewPath . '.edit', compact('employee', 'departments', 'positions'));
     }
 
     public function update(Request $request, $id)
@@ -84,7 +99,7 @@ class EmployeeController extends Controller
             $employee = Employee::findOrFail($id);;
             $validatedData = $request->validate([
                 'name' => 'required|string',
-                'email' => 'required|string|unique:users,email,'.$employee->user_id,
+                'email' => 'required|string|unique:users,email,' . $employee->user_id,
                 'secondary_email' => 'required|string',
                 'phone' => 'required|string|min:11|max:11',
                 'hire_date' => 'required|string',

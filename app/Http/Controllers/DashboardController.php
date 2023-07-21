@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Nette\Schema\ValidationException;
 
-class UserController extends Controller
+class DashboardController extends Controller
 {
     public function create()
     {
